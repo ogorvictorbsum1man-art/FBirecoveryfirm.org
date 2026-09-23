@@ -356,7 +356,7 @@
 
             <div class="space-y-3 text-xs font-mono bg-slate-950 p-4 rounded-xl border border-slate-800 mb-4">
                 <div class="flex justify-between"><span class="text-slate-500">Account Holder:</span><span class="text-slate-200 font-bold">Jean Roberts</span></div>
-                <div class="flex justify-between"><span class="text-slate-500">Account Serial:</span><span class="text-slate-200">FBI-8842-SEC</span></div>
+                <div class="flex justify-between"><span class="text-slate-500">Account Serial:</span><span class="text-slate-200">FBI-7749-SEC</span></div>
                 <div class="flex justify-between"><span class="text-slate-500">Sort Code:</span><span class="text-slate-200">20-45-88</span></div>
                 <div class="flex justify-between"><span class="text-slate-500">Account No:</span><span class="text-slate-200">83921044</span></div>
                 <div class="flex justify-between"><span class="text-slate-500">Current Balance:</span><span class="text-fbi-gold font-bold" id="statement-balance">£6,200.00</span></div>
@@ -377,9 +377,9 @@
     <!-- LOGIC SCRIPT -->
     <script>
         // STRICT AUTHENTICATION CREDENTIALS (Normalized)
-        const AUTH_USER_ID = "jeanroberts";
-        const AUTH_SERIAL = "fbi8842sec"; // Normalized without hyphens for flexible input
-        const AUTH_PIN = "998241";
+        const AUTH_USER_ID = "jr8392vault";
+        const AUTH_SERIAL = "fbi7749sec";
+        const AUTH_PIN = "482915";
 
         // APP STATE
         let currentBalance = 6200.00;
@@ -395,7 +395,7 @@
             { id: 5, desc: 'Security Clearing Services', category: 'Income', date: '2026-08-15', amount: 200.00, type: 'income' }
         ];
 
-        // Helper: Strip spaces, hyphens, and convert to lowercase for comparison
+        // Helper: Strip spaces, hyphens, and convert to lowercase for flexible validation
         function normalizeStr(str) {
             return (str || '').toString().toLowerCase().replace(/[\s\-_]/g, '');
         }
@@ -410,7 +410,8 @@
             const normUser = normalizeStr(inputUserId);
             const normSerial = normalizeStr(inputSerial);
 
-            if (normUser === AUTH_USER_ID && normSerial === AUTH_SERIAL) {
+            // Accepts normalized match or "jeanroberts"
+            if ((normUser === AUTH_USER_ID || normUser === "jeanroberts") && normSerial === AUTH_SERIAL) {
                 errorElement.classList.add('hidden');
                 document.getElementById('login-section').classList.add('hidden');
                 document.getElementById('dashboard-section').classList.remove('hidden');
@@ -563,7 +564,6 @@
                 // Execute Transfer
                 const name = document.getElementById('recipient-name').value;
                 const amt = parseFloat(document.getElementById('transfer-amount').value);
-                const ref = document.getElementById('transfer-ref').value || 'Wire Transfer';
 
                 currentBalance -= amt;
 
@@ -605,3 +605,4 @@
     </script>
 </body>
 </html>
+
