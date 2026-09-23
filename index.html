@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>FBI Firm - Secure Client Portal</title>
+    <title>FBI Firm - Secure Client Vault</title>
     <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
@@ -27,6 +27,23 @@
     </script>
     <!-- FontAwesome for Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* Custom scrollbar for transaction table */
+        ::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #061727;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #1e293b;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #c5a059;
+        }
+    </style>
 </head>
 <body class="bg-fbi-900 text-slate-100 font-sans min-h-screen flex flex-col antialiased selection:bg-fbi-gold selection:text-fbi-900">
 
@@ -35,7 +52,7 @@
         <div class="max-w-6xl mx-auto px-4 py-3 flex items-center justify-between">
             <div class="flex items-center space-x-3">
                 <div class="w-10 h-10 rounded-full bg-fbi-gold/20 border border-fbi-gold flex items-center justify-center text-fbi-gold font-bold text-lg shadow-lg">
-                    <i class="fa-solid font-mono fa-shield-halved"></i>
+                    <i class="fa-solid fa-shield-halved"></i>
                 </div>
                 <div>
                     <h1 class="font-bold text-lg tracking-wider text-slate-100 uppercase">FBI FIRM</h1>
@@ -48,8 +65,9 @@
                     <p class="text-xs text-slate-400">Account Holder</p>
                     <p class="text-sm font-semibold text-fbi-gold" id="header-user-name">Jean Roberts</p>
                 </div>
-                <button onclick="logout()" class="px-3 py-1.5 rounded-lg border border-slate-700 bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs font-semibold transition">
-                    <i class="fa-solid fa-right-from-bracket mr-1"></i> Exit
+                <button onclick="logout()" class="px-3 py-1.5 rounded-lg border border-slate-700 bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs font-semibold transition flex items-center space-x-1.5">
+                    <i class="fa-solid fa-right-from-bracket"></i>
+                    <span>Exit</span>
                 </button>
             </div>
         </div>
@@ -58,7 +76,7 @@
     <!-- MAIN CONTAINER -->
     <main class="flex-grow max-w-6xl w-full mx-auto p-4 sm:p-6 flex flex-col justify-center">
 
-        <!-- LOGIN SECTION -->
+        <!-- SINGLE-SLOT LOGIN SECTION -->
         <div id="login-section" class="max-w-md w-full mx-auto bg-slate-900/90 border border-slate-800 rounded-2xl p-6 sm:p-8 shadow-2xl relative overflow-hidden my-auto">
             <div class="absolute -top-12 -right-12 w-32 h-32 bg-fbi-gold/10 rounded-full blur-2xl pointer-events-none"></div>
 
@@ -66,42 +84,31 @@
                 <div class="inline-flex items-center justify-center w-16 h-16 rounded-full bg-slate-800 border border-fbi-gold/40 text-fbi-gold text-2xl mb-3 shadow-inner">
                     <i class="fa-solid fa-lock"></i>
                 </div>
-                <h2 class="text-xl font-bold text-slate-100 uppercase tracking-wide">Client Vault Access</h2>
-                <p class="text-xs text-slate-400 mt-1">Authorized personnel verification required</p>
+                <h2 class="text-xl font-bold text-slate-100 uppercase tracking-wide">Vault Access</h2>
+                <p class="text-xs text-slate-400 mt-1">Enter Security Clearance Key</p>
             </div>
 
             <!-- Login Error Alert -->
             <div id="login-error" class="hidden mb-4 p-3 rounded-lg bg-red-500/10 border border-red-500/30 text-red-400 text-xs flex items-center space-x-2">
                 <i class="fa-solid fa-triangle-exclamation text-sm flex-shrink-0"></i>
-                <span id="login-error-text">Invalid credentials. Access Denied.</span>
+                <span id="login-error-text">Invalid Access Key. Access Denied.</span>
             </div>
 
             <form id="login-form" onsubmit="handleLogin(event)" class="space-y-4">
                 <div>
-                    <label class="block text-xs font-medium text-slate-300 uppercase tracking-wider mb-1">User Identifier (ID)</label>
+                    <label class="block text-xs font-medium text-slate-300 uppercase tracking-wider mb-2 text-center">Access Key Code</label>
                     <div class="relative">
-                        <span class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-slate-500 text-sm">
-                            <i class="fa-solid fa-user-shield"></i>
-                        </span>
-                        <input type="text" id="input-userid" required placeholder="Enter User ID"
-                            class="w-full pl-10 pr-4 py-2.5 bg-slate-950 border border-slate-800 rounded-xl text-slate-100 placeholder-slate-600 focus:outline-none focus:border-fbi-gold focus:ring-1 focus:ring-fbi-gold text-sm transition">
-                    </div>
-                </div>
-
-                <div>
-                    <label class="block text-xs font-medium text-slate-300 uppercase tracking-wider mb-1">Serial Number / Passcode</label>
-                    <div class="relative">
-                        <span class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-slate-500 text-sm">
+                        <span class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-slate-500 text-sm">
                             <i class="fa-solid fa-key"></i>
                         </span>
-                        <input type="password" id="input-serial" required placeholder="Enter Serial Number"
-                            class="w-full pl-10 pr-4 py-2.5 bg-slate-950 border border-slate-800 rounded-xl text-slate-100 placeholder-slate-600 focus:outline-none focus:border-fbi-gold focus:ring-1 focus:ring-fbi-gold text-sm transition">
+                        <input type="password" id="input-accesscode" required placeholder="••••••••" maxlength="16" autocomplete="off"
+                            class="w-full pl-10 pr-4 py-3 bg-slate-950 border border-slate-800 rounded-xl text-slate-100 font-mono tracking-widest text-center text-lg placeholder-slate-700 focus:outline-none focus:border-fbi-gold focus:ring-1 focus:ring-fbi-gold transition">
                     </div>
                 </div>
 
                 <button type="submit" class="w-full py-3 bg-fbi-gold hover:bg-fbi-goldhover text-fbi-900 font-bold uppercase tracking-wider text-xs rounded-xl shadow-lg transition duration-200 transform active:scale-[0.99] flex items-center justify-center space-x-2 mt-2">
                     <i class="fa-solid fa-shield-halved"></i>
-                    <span>Authenticate & Access</span>
+                    <span>Authenticate Key</span>
                 </button>
             </form>
 
@@ -299,7 +306,7 @@
                 </div>
 
                 <div id="pin-error" class="hidden mb-4 p-2.5 rounded-lg bg-red-500/10 border border-red-500/30 text-red-400 text-xs text-center font-semibold">
-                    Invalid Authorization PIN.
+                    Invalid Authorization PIN. Transfer Blocked.
                 </div>
 
                 <form onsubmit="verifyPinAndExecute(event)" class="space-y-5">
@@ -376,10 +383,9 @@
 
     <!-- LOGIC SCRIPT -->
     <script>
-        // STRICT AUTHENTICATION CREDENTIALS (Normalized)
-        const AUTH_USER_ID = "jr8392vault";
-        const AUTH_SERIAL = "fbi7749sec";
-        const AUTH_PIN = "482915";
+        // STRICT AUTHENTICATION CREDENTIALS
+        const AUTH_LOGIN_KEY = "10101010";
+        const AUTH_PIN = "534265";
 
         // APP STATE
         let currentBalance = 6200.00;
@@ -395,23 +401,13 @@
             { id: 5, desc: 'Security Clearing Services', category: 'Income', date: '2026-08-15', amount: 200.00, type: 'income' }
         ];
 
-        // Helper: Strip spaces, hyphens, and convert to lowercase for flexible validation
-        function normalizeStr(str) {
-            return (str || '').toString().toLowerCase().replace(/[\s\-_]/g, '');
-        }
-
-        // LOGIN HANDLER
+        // SINGLE-SLOT LOGIN HANDLER
         function handleLogin(e) {
             e.preventDefault();
-            const inputUserId = document.getElementById('input-userid').value;
-            const inputSerial = document.getElementById('input-serial').value;
+            const inputAccessCode = document.getElementById('input-accesscode').value.trim();
             const errorElement = document.getElementById('login-error');
 
-            const normUser = normalizeStr(inputUserId);
-            const normSerial = normalizeStr(inputSerial);
-
-            // Accepts normalized match or "jeanroberts"
-            if ((normUser === AUTH_USER_ID || normUser === "jeanroberts") && normSerial === AUTH_SERIAL) {
+            if (inputAccessCode === AUTH_LOGIN_KEY) {
                 errorElement.classList.add('hidden');
                 document.getElementById('login-section').classList.add('hidden');
                 document.getElementById('dashboard-section').classList.remove('hidden');
@@ -420,7 +416,8 @@
                 renderDashboard();
             } else {
                 errorElement.classList.remove('hidden');
-                document.getElementById('login-error-text').innerText = "Invalid User ID or Serial Number.";
+                document.getElementById('login-error-text').innerText = "Invalid Access Key. Access Denied.";
+                document.getElementById('input-accesscode').value = '';
             }
         }
 
@@ -560,7 +557,7 @@
             let enteredPin = '';
             boxes.forEach(b => enteredPin += b.value);
 
-            if (normalizeStr(enteredPin) === AUTH_PIN) {
+            if (enteredPin.trim() === AUTH_PIN) {
                 // Execute Transfer
                 const name = document.getElementById('recipient-name').value;
                 const amt = parseFloat(document.getElementById('transfer-amount').value);
